@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Про мене</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 10px;
+        }
+        .info-section {
+            margin: 20px 0;
+        }
+        .info-section h2 {
+            color: #764ba2;
+            margin-top: 25px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .nav {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        .nav a {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Про мене</h1>
+        
+        <div class="info-section">
+            <h2>Особиста інформація</h2>
+            <p>Привіт! Мене звати Едуард. Я захоплююся програмуванням та розробкою веб-додатків. Наразі вивчаю Node.js та серверну розробку.</p>
+        </div>
+        
+        <div class="info-section">
+            <h2>Хобі та інтереси</h2>
+            <ul>
+                <li>💻 Програмування та веб-розробка</li>
+                <li>☕ Кава</li>
+                <li>🎵 Музика</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h2>Навички</h2>
+            <ul>
+                <li>JavaScript (ES6+)</li>
+                <li>Node.js</li>
+                <li>HTML/CSS</li>
+                <li>Vue(2/3)</li>
+                <li>React</li>
+                <li>Git та GitHub</li>
+            </ul>
+        </div>
+        
+        <div class="nav">
+            <a href="/">Головна</a>
+            <a href="/coffee">Кав'ярня</a>
+            <a href="/music">Музика</a>
+        </div>
+    </div>
+</body>
+</html>
+
