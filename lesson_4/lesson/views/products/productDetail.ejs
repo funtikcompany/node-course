@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('../components/nav') %>
+    <h1><%= title %></h1>
+    <main>
+        <a href="/products">Back to products</a>
+        <p>ID: <%= product.id %></p>
+        <p>Name: <%= product.name %></p>
+        <p>Price: <%= product.price %></p>
+    </main>
+    <%- include('../components/footer') %>
+  </body>
+</html>

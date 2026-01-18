@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <%- include('../partials/nav', { activePage }) %>
+    <h1><%= title %></h1>
+    
+    <% if (typeof links !== 'undefined') { %>
+      <ul>
+        <% links.forEach(function(link) { %>
+          <li>
+            <a href="<%= link.url %>" target="_blank"><%= link.name %></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+    
+    <% if (typeof info !== 'undefined') { %>
+      <h2>Інформація про мене:</h2>
+      <ul>
+        <li><strong>Ім'я:</strong> <%= info.name %></li>
+        <li><strong>Вік:</strong> <%= info.age %></li>
+        <li><strong>Професія:</strong> <%= info.profession %></li>
+        <li><strong>Інтереси:</strong> <%= info.interests.join(', ') %></li>
+        <li><strong>Email:</strong> <a href="mailto:<%= info.email %>"><%= info.email %></a></li>
+      </ul>
+    <% } %>
+  </body>
+</html>
+

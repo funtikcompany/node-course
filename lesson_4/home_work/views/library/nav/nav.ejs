@@ -1,0 +1,6 @@
+<nav>
+    <ul>
+        <li><a href="/" class="<%= typeof currentPath !== 'undefined' && currentPath === '/' ? 'active' : '' %>">Головна</a></li>
+        <li><a href="/library" class="<%= typeof currentPath !== 'undefined' && currentPath.startsWith('/library') ? 'active' : '' %>">Бібліотека</a></li>
+    </ul>
+</nav>

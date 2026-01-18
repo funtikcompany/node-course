@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+      async function deleteP(id) {
+        try {
+          const response = await fetch(`/products`, {
+            method: 'delete',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id }),
+          })
+          window.location.reload()
+          const data = await response.json()
+          console.log(data)
+          if (data.message) {
+            window.location.reload()
+          } else {
+            throw new Error('Failed to delete product')
+          }
+        
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('../components/nav') %>
+    <h1><%= title %></h1>
+    <main>
+        <a href="/products/create">Create new product</a>
+        <table>
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% products.forEach(product => { %>
+                  <tr>
+                      <td><a href="/products/<%= product.id %>"><%= product.id %></a></td>
+                      <td><%= product.name %></td>
+                      <td><%= product.price %></td>
+                      <td><a href="/products/update/<%= product.id %>">Update</a></td>
+                      <td><button onclick="deleteP(<%= product.id %>); return false;">Delete</button></td>
+                  </tr>
+              <% }) %>
+          </tbody>
+        </table>
+    </main>
+    <%- include('../components/footer') %>
+  </body>
+</html>

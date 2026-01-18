@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <% include block/header.ejs %>
+    <main>
+        <div class="page-header">
+            <h1><%= title %></h1>
+            <p>Управління бібліотекою книг</p>
+        </div>
+        
+        <div class="actions-bar">
+            <a href="/library/create" class="btn btn-primary">+ Додати книгу</a>
+            <div>
+                <form action="/library/search" method="GET">
+                    <input type="text" name="author" id="search" placeholder="Пошук за автором" value="<%= searchAuthor %>">
+                    <input type="number" name="year" id="year" placeholder="Фільтр за роком" value="<%= searchYear %>">
+                    <button type="submit" class="btn btn-primary">Застосувати</button>
+                    <% if ((searchAuthor && searchAuthor !== '') || (searchYear && searchYear !== '' && searchYear !== '0')) { %>
+                        <a href="/library" class="btn btn-secondary">Скинути фільтр</a>
+                    <% } %>
+                </form>
+            </div>
+        </div>
+
+        <% if (libraryModules && libraryModules.length > 0) { %>
+            <div class="library-grid">
+                <% libraryModules.forEach(function(book) { %>
+                    <div class="library-card">
+                        <h3><%= book.name %></h3>
+                        <p><strong>Автор:</strong> <%= book.author %></p>
+                        <p><strong>Рік:</strong> <%= book.year %></p>
+                        <div class="card-actions">
+                            <a href="/library/<%= book.id %>" class="btn btn-primary" style="flex: 1; padding: 0.5rem;">Переглянути</a>
+                            <a href="/library/update/<%= book.id %>" class="btn btn-success" style="flex: 1; padding: 0.5rem;">Редагувати</a>
+                            <form action="/library/delete/<%= book.id %>" method="POST" style="flex: 1; margin: 0;" onsubmit="return confirm('Ви впевнені, що хочете видалити цю книгу?');">
+                                <button type="submit" class="btn btn-danger" style="width: 100%; padding: 0.5rem;">Видалити</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <h2>Бібліотека порожня</h2>
+                <p>Поки що немає жодної книги. Почніть з додавання першої книги!</p>
+                <a href="/library/create" class="btn btn-primary">Додати першу книгу</a>
+            </div>
+        <% } %>
+    </main>
+    <% include block/footer.ejs %>
+</body>
+</html>
