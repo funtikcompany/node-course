@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+        .view-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid #00B7FF;
+            background-color: white;
+            color: #00B7FF;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #00B7FF;
+            color: white;
+        }
+
+        .view-btn.active {
+            background-color: #00B7FF;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+
+        /* Table View Styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .products-table thead {
+            background-color: #00B7FF;
+            color: white;
+        }
+
+        .products-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .products-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .products-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .products-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .no-image {
+            width: 60px;
+            height: 60px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .quantity {
+            font-weight: 500;
+        }
+
+        .quantity.low {
+            color: #dc3545;
+        }
+
+        .quantity.medium {
+            color: #ffc107;
+        }
+
+        .quantity.high {
+            color: #28a745;
+        }
+
+        /* List View Styles */
+        .list-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .product-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e9ecef;
+        }
+
+        .product-card-body {
+            padding: 20px;
+        }
+
+        .product-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .product-card-description {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-card-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #28a745;
+        }
+
+        .product-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #e9ecef;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navStore', { activePage: '/viewProduct' }) %>
+    <h1>Перегляд продуктів</h1>
+
+    <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
+        <div class="view-controls">
+            <button class="view-btn active" onclick="showTableView()">Таблиця</button>
+            <button class="view-btn" onclick="showListView()">Список</button>
+        </div>
+
+        <div id="table-view" class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Зображення</th>
+                        <th>Назва</th>
+                        <th>Опис</th>
+                        <th>Категорія</th>
+                        <th>Ціна</th>
+                        <th>Кількість</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                        <tr>
+                            <td>
+                                <% if (product.imageUrl && product.imageUrl.trim() !== '') { %>
+                                    <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="product-image" onerror="this.parentElement.innerHTML='<div class=\'no-image\'>Немає<br>зображення</div>'">
+                                <% } else { %>
+                                    <div class="no-image">Немає<br>зображення</div>
+                                <% } %>
+                            </td>
+                            <td><strong><%= product.name %></strong></td>
+                            <td><%= product.description || 'Немає опису' %></td>
+                            <td>
+                                <% if (product.category) { %>
+                                    <span class="category-badge"><%= product.category %></span>
+                                <% } else { %>
+                                    <span class="category-badge">Не вказано</span>
+                                <% } %>
+                            </td>
+                            <td class="price"><%= parseFloat(product.price || 0).toFixed(2) %> ₴</td>
+                            <td>
+                                <% 
+                                    const quantity = parseInt(product.quantity || 0);
+                                    let quantityClass = 'high';
+                                    if (quantity === 0) quantityClass = 'low';
+                                    else if (quantity < 10) quantityClass = 'medium';
+                                %>
+                                <span class="quantity <%= quantityClass %>"><%= quantity %> шт.</span>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- List View -->
+        <div id="list-view" class="list-container hidden">
+            <% products.forEach(product => { %>
+                <div class="product-card">
+                    <% if (product.imageUrl && product.imageUrl.trim() !== '') { %>
+                        <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="product-card-image" onerror="this.style.display='none'">
+                    <% } %>
+                    <div class="product-card-body">
+                        <h3 class="product-card-title"><%= product.name %></h3>
+                        <p class="product-card-description"><%= product.description || 'Немає опису' %></p>
+                        <div class="product-card-info">
+                            <span class="product-card-price"><%= parseFloat(product.price || 0).toFixed(2) %> ₴</span>
+                            <% if (product.category) { %>
+                                <span class="category-badge"><%= product.category %></span>
+                            <% } %>
+                        </div>
+                        <div class="product-card-meta">
+                            <span>
+                                <% 
+                                    const quantity = parseInt(product.quantity || 0);
+                                    let quantityClass = 'high';
+                                    if (quantity === 0) quantityClass = 'low';
+                                    else if (quantity < 10) quantityClass = 'medium';
+                                %>
+                                Кількість: <span class="quantity <%= quantityClass %>"><%= quantity %> шт.</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h2>Немає продуктів</h2>
+            <p>Поки що немає жодного продукту для відображення.</p>
+            <p><a href="/addProduct">Додати перший продукт</a></p>
+        </div>
+    <% } %>
+
+    <script>
+        function showTableView() {
+            document.getElementById('table-view').classList.remove('hidden');
+            document.getElementById('list-view').classList.add('hidden');
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function showListView() {
+            document.getElementById('table-view').classList.add('hidden');
+            document.getElementById('list-view').classList.remove('hidden');
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+

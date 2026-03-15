@@ -1,29 +1,13 @@
 import { Router } from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import fs from 'fs/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const router = Router()
 
-// Шлях до файлу з продуктами
-const productsFilePath = path.join(__dirname, '../data/products.json')
-
-// Функція для читання продуктів
-async function readProducts() {
-  try {
-    const data = await fs.readFile(productsFilePath, 'utf-8')
-    return JSON.parse(data)
-  } catch (error) {
-    // Якщо файл не існує, повертаємо порожній масив
-    return []
-  }
-}
-
-
 router.get('/', (req, res) => {
-    res.render('index', { title: 'Express', activePage: '/' })
+res.render('index', { title: 'Express', currentPage: 'home' })
 })
 
 // Маршрут для пори року
@@ -42,7 +26,7 @@ router.get('/season', (req, res) => {
     season = 'Зима'
   }
   
-  res.render('season', { season, title: 'Пора року', activePage: '/season' })
+  res.render('season', { season, title: 'Пора року', currentPage: 'season' })
 })
 
 // Маршрут для поточного дня
@@ -51,7 +35,7 @@ router.get('/day', (req, res) => {
   const days = ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота']
   const day = days[now.getDay()]
   
-  res.render('day', { day, title: 'Поточний день', activePage: '/day' })
+  res.render('day', { day, title: 'Поточний день', currentPage: 'day' })
 })
 
 // Маршрут для часу дня
@@ -68,22 +52,22 @@ router.get('/time', (req, res) => {
     timeOfDay = 'Вечеря'
   }
   
-  res.render('time', { timeOfDay, title: 'Час дня', activePage: '/time' })
+  res.render('time', { timeOfDay, title: 'Час дня', currentPage: 'time' })
 })
 
 // Маршрут для статичної сторінки музики
 router.get('/music', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/pages/music.html'))
+  res.render('for_statick_page/music', { music: 'Паліндром', title: 'Музика', currentPage: 'music' })
 })
 
-// Маршрут для статичної сторінки про каву
+// Маршрут для статичної сторінки кави
 router.get('/coffee', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/pages/coffee.html'))
+  res.render('for_statick_page/coffee', { coffee: `Лате`, title: 'Кава', currentPage: 'coffee' })
 })
 
 // Маршрут для статичної сторінки цілей
 router.get('/goals', (req, res) => {
-  res.render('task3/goals', { goals: ['Вчитися', 'Працювати', 'Заробляти'], title: 'Цілі', activePage: '/goals' })
+  res.render('task3/goals', { goals: ['Вчитися', 'Працювати', 'Заробляти'], title: 'Цілі', currentPage: 'goals' })
 })
 
 // Маршрут для статичної сторінки новин
@@ -96,22 +80,17 @@ router.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/pages/about.html'))
 })
 
-router.get('/info', (req, res) => {
-  res.render('task3/info', { title: 'Щоб краще дізнатись про мене в пошуковому рядку введіть /info/sites, /info/films, /info/me', activePage: '/info' })
-})
-
 // Маршрут для інформації залежно від параметра
 router.get('/info/:myLinks', (req, res) => {
   const { myLinks } = req.params
   
   let data = {}
-  let title = ''
+  let title = 'Інформація'
   
   if (myLinks === 'sites') {
     title = 'Улюблені сайти'
     data = {
-      title,
-      activePage: '/info/' + myLinks,
+      type: 'sites',
       links: [
         { name: 'GitHub', url: 'https://github.com' },
         { name: 'Stack Overflow', url: 'https://stackoverflow.com' },
@@ -122,66 +101,39 @@ router.get('/info/:myLinks', (req, res) => {
   } else if (myLinks === 'films') {
     title = 'Улюблені онлайн кінотеатри'
     data = {
-      title,
-      activePage: '/info/' + myLinks,
+      type: 'films',
       links: [
         { name: 'Netflix', url: 'https://www.netflix.com' },
         { name: 'Disney+', url: 'https://www.disneyplus.com' },
-        { name: 'Amazon Prime Video', url: 'https://www.primevideo.com' },
-        { name: 'HBO Max', url: 'https://www.hbomax.com' }
+        { name: 'HBO Max', url: 'https://www.hbomax.com' },
+        { name: 'Amazon Prime Video', url: 'https://www.primevideo.com' }
       ]
     }
   } else if (myLinks === 'me') {
     title = 'Про мене'
     data = {
-      title,
-      activePage: '/info/' + myLinks,
+      type: 'me',
       info: {
-        name: 'Едуард',
-        age: '26',
-        profession: 'frontend developer',
-        interests: ['Програмування', 'Веб-розробка', 'Node.js', 'React', 'Vue.js'],
-        email: 'edua20021@gmail.com'
+        name: 'Ваше ім\'я',
+        age: 'Ваш вік',
+        profession: 'Ваша професія',
+        interests: ['Програмування', 'Веб-розробка', 'Node.js'],
+        description: 'Тут може бути ваша особиста інформація'
       }
     }
   } else {
-    return res.status(404).render('error', { 
-      message: 'Сторінку не знайдено', 
-      title: 'Помилка 404',
-      activePage: ''
-    })
+    data = {
+      type: 'unknown',
+      message: 'Невідомий параметр'
+    }
   }
   
-  res.render('task3/info', data)
-})
-
-router.get('/store', (req, res) => {
-  res.render('store/store', { title: 'Магазин', activePage: '/store' })
-})
-
-// Маршрут для відображення форми додавання продукту
-router.get('/addProduct', (req, res) => {
-  res.render('store/addProduct', { title: 'Додати продукт', activePage: '/addProduct' })
-})
-
-
-// Маршрут для відображення продуктів
-router.get('/viewProduct', async (req, res) => {
-  try {
-    const products = await readProducts()
-    res.render('store/viewProduct', {
-      title: 'Перегляд продуктів',
-      products: products,
-      activePage: '/viewProduct'
-    })
-  } catch (error) {
-    console.error('Помилка при читанні продуктів:', error)
-    res.status(500).render('error', {
-      message: 'Помилка при завантаженні продуктів',
-      title: 'Помилка',
-      activePage: ''
-    })
-  }
+  res.render('task3/info', { 
+    ...data, 
+    title, 
+    currentPage: 'info',
+    myLinks 
+  })
 })
 
 export default router

@@ -5,10 +5,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <%- include('../partials/nav', { activePage }) %>
+    <%- include('../partials/nav') %>
     <h1><%= title %></h1>
     
-    <% if (typeof links !== 'undefined') { %>
+    <% if (type === 'sites') { %>
+      <h2>Адреси улюблених сайтів:</h2>
       <ul>
         <% links.forEach(function(link) { %>
           <li>
@@ -16,17 +17,31 @@
           </li>
         <% }); %>
       </ul>
-    <% } %>
-    
-    <% if (typeof info !== 'undefined') { %>
-      <h2>Інформація про мене:</h2>
+    <% } else if (type === 'films') { %>
+      <h2>Адреси улюблених онлайн кінотеатрів:</h2>
       <ul>
-        <li><strong>Ім'я:</strong> <%= info.name %></li>
-        <li><strong>Вік:</strong> <%= info.age %></li>
-        <li><strong>Професія:</strong> <%= info.profession %></li>
-        <li><strong>Інтереси:</strong> <%= info.interests.join(', ') %></li>
-        <li><strong>Email:</strong> <a href="mailto:<%= info.email %>"><%= info.email %></a></li>
+        <% links.forEach(function(link) { %>
+          <li>
+            <a href="<%= link.url %>" target="_blank"><%= link.name %></a>
+          </li>
+        <% }); %>
       </ul>
+    <% } else if (type === 'me') { %>
+      <h2>Інформація про себе:</h2>
+      <div>
+        <p><strong>Ім'я:</strong> <%= info.name %></p>
+        <p><strong>Вік:</strong> <%= info.age %></p>
+        <p><strong>Професія:</strong> <%= info.profession %></p>
+        <p><strong>Інтереси:</strong></p>
+        <ul>
+          <% info.interests.forEach(function(interest) { %>
+            <li><%= interest %></li>
+          <% }); %>
+        </ul>
+        <p><strong>Опис:</strong> <%= info.description %></p>
+      </div>
+    <% } else { %>
+      <p><%= message || 'Невідомий тип інформації' %></p>
     <% } %>
   </body>
 </html>

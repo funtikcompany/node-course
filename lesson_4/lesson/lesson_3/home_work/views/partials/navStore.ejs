@@ -1,0 +1,12 @@
+<% 
+  const currentPage = typeof activePage !== 'undefined' ? activePage : '';
+%>
+<nav class="navbar">
+  <ul class="nav-list">
+    <li><a href="/" >Головна</a></li>
+    <li><a href="/addProduct" class="nav-link <%= currentPage === '/addProduct' ? 'active' : '' %>">Додати продукт</a></li>
+    <li><a href="/viewProduct" class="nav-link <%= currentPage === '/viewProduct' ? 'active' : '' %>">Переглянути продукт</a></li>
+
+  </ul>
+</nav>
+

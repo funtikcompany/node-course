@@ -1,0 +1,45 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+a {
+  color: #00B7FF;
+}
+
+/* Navigation styles */
+.navbar {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+  padding: 15px 0;
+  margin-bottom: 30px;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #495057;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #00B7FF;
+  color: white;
+}
+
+.nav-link.active {
+  background-color: #00B7FF;
+  color: white;
+}

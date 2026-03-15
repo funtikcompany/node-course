@@ -1,0 +1,19 @@
+<% 
+  const currentPage = typeof activePage !== 'undefined' ? activePage : '';
+%>
+<nav class="navbar">
+  <ul class="nav-list">
+    <li><a href="/" class="nav-link <%= currentPage === '/' ? 'active' : '' %>">Головна</a></li>
+    <li><a href="/season" class="nav-link <%= currentPage === '/season' ? 'active' : '' %>">Пора року</a></li>
+    <li><a href="/day" class="nav-link <%= currentPage === '/day' ? 'active' : '' %>">День</a></li>
+    <li><a href="/time" class="nav-link <%= currentPage === '/time' ? 'active' : '' %>">Час дня</a></li>
+    <li><a href="/music" class="nav-link <%= currentPage === '/music' ? 'active' : '' %>">Музика</a></li>
+    <li><a href="/coffee" class="nav-link <%= currentPage === '/coffee' ? 'active' : '' %>">Кава</a></li>
+    <li><a href="/goals" class="nav-link <%= currentPage === '/goals' ? 'active' : '' %>">Цілі</a></li>
+    <li><a href="/news" class="nav-link <%= currentPage === '/news' ? 'active' : '' %>">Новини</a></li>
+    <li><a href="/about" class="nav-link <%= currentPage === '/about' ? 'active' : '' %>">Про нас</a></li>
+    <li><a href="/store" class="nav-link <%= currentPage === '/store' ? 'active' : '' %>">Магазин</a></li>
+    <li><a href="/info" class="nav-link <%= (typeof currentPage === 'string' && currentPage.startsWith('/info')) ? 'active' : '' %>">Інформація</a></li>
+  </ul>
+</nav>
+
