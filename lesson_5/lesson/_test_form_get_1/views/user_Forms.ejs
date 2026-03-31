@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form action="/users/data" method="post" enctype="multipart/form-data">
+      <label>
+        Name 1
+        <input type="text" name="userName" />
+      </label>
+      <label>
+        Age
+        <input type="number" name="userAge" />
+      </label>
+      <label>
+        Image
+        <input type="file" name="userImage" accept="image/*" />
+      </label>
+      <button>Зберегти</button>
+    </form>
+  </body>
+</html>

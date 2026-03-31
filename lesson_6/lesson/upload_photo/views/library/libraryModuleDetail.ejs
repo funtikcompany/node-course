@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <% include block/header.ejs %>
+    <main>
+        <div class="page-header">
+            <h1>Деталі книги</h1>
+        </div>
+
+        <% if (libraryModule) { %>
+            <div class="form-container">
+                <div class="library-card" style="max-width: 600px; margin: 0 auto;">
+                    <h2><%= libraryModule.name %></h2>
+                    <div style="margin-top: 1.5rem;">
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                            <strong>Автор:</strong> 
+                            <span style="color: var(--text-light);"><%= libraryModule.author %></span>
+                        </p>
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                            <strong>Рік видання:</strong> 
+                            <span style="color: var(--text-light);"><%= libraryModule.year %></span>
+                        </p>
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                            <strong>ID:</strong> 
+                            <span style="color: var(--text-light);"><%= libraryModule.id %></span>
+                        </p>
+                    </div>
+                    <div class="form-actions" style="margin-top: 2rem;">
+                        <a href="/library/update/<%= libraryModule.id %>" class="btn btn-success">Редагувати</a>
+                        <a href="/library" class="btn btn-secondary">Назад до списку</a>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <h2>Книгу не знайдено</h2>
+                <p>Книга з таким ID не існує.</p>
+                <a href="/library" class="btn btn-primary">Повернутися до бібліотеки</a>
+            </div>
+        <% } %>
+    </main>
+    <% include block/footer.ejs %>
+</body>
+</html>
+

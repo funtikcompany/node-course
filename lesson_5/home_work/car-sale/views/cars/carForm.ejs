@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log(e.target.result)
+                document.getElementById('image-preview').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    </script>
+</head>
+<body>
+    <%- include('../componets/header', { activePage: 'cars' }) %>
+    <main class="main-content">
+        <div class="container">
+            <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        <% errors.forEach(function(error) { %>
+                            <li><%= typeof error === 'string' ? error : error.msg %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            <form action="<%= car && car.id ? `/cars/update/${car.id}` : '/cars/create' %>" enctype="multipart/form-data" method="post">
+                <% if (car && car.image && !car.id) { %>
+                    <input type="hidden" name="existingImage" value="<%= car.image %>">
+                <% } %>
+                <div class="form-group mb-3">
+                    <label for="name">Назва автомобіля</label>
+                    <input type="text" id="name" name="name" class="form-control"  value="<%= car ? car.name : '' %>">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="number">Номер автомобіля</label>
+                    <input type="text" id="number" name="number" class="form-control"  value="<%= car ? car.number : '' %>">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="age">Рік випуску автомобіля</label>
+                    <input type="number" id="age" name="age" class="form-control"  value="<%= car ? car.age : '' %>">
+                </div>
+                <div class="form-group mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <label for="image">Фото автомобіля</label>
+                        <img id="image-preview" src="<%= car && car.image ? `/uploads/${car.image}` : '/images/no-img.jpg' %>" alt="<%= car ? car.name : 'Нове авто' %>" class="img-fluid">
+                    </div>
+                    <input onchange="previewImage(event)" type="file" id="image" name="image" accept="image/*" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary"><%= car && car.id ? 'Оновити' : 'Зберегти' %></button>
+                <a href="/cars" class="btn btn-secondary">Назад</a>
+            </form>
+        </div>
+    </main>
+    <%- include('../componets/footer') %>
+</body>
+</html>
