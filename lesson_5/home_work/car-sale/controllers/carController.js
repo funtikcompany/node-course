@@ -3,30 +3,30 @@ import { deleteFile } from '../utils/utils.js'
 import { validationResult, matchedData } from 'express-validator'
 
 class CarController {
-    static getAllCars(req, res) {
-        const cars = Car.getAllCars()
+    static async getAllCars(req, res) {
+        const cars = await carServices.getAllCars()
         res.render('cars/carList', { cars,
             title: 'Список автомобілів',
             activePage: 'cars'
         })
     }
-    static getCarById(req, res) {
-        const car = Car.getCarById(req.params.id)
+    static async getCarById(req, res) {
+        const car = await carServices.getCarById(req.params.id)
         res.render('cars/carDetail', { car,
             title: 'Детальна інформація про автомобіль',
             activePage: 'cars'
          })
     }
-    static showCarForm(req, res) {
+    static async showCarForm(req, res) {
         const id = req.params.id
-        const car = id ? Car.getCarById(id) : null
+        const car = id ? await carServices.getCarById(id) : null
         res.render('cars/carForm', {
             car: car,
             title: 'Додати автомобіль',
             activePage: 'cars'
         })
     }
-    static createCar(req, res) {
+    static async createCar(req, res) {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).render('cars/carForm', {

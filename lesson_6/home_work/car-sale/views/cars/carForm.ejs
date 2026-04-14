@@ -31,8 +31,8 @@
                     </ul>
                 </div>
             <% } %>
-            <form action="<%= car && car.id ? `/cars/update/${car.id}` : '/cars/create' %>" enctype="multipart/form-data" method="post">
-                <% if (car && car.image && !car.id) { %>
+            <form action="<%= car && car._id ? `/cars/update/${car._id}` : '/cars/create' %>" enctype="multipart/form-data" method="post">
+                <% if (car && car._id) { %>
                     <input type="hidden" name="existingImage" value="<%= car.image %>">
                 <% } %>
                 <div class="form-group mb-3">
@@ -54,7 +54,7 @@
                     </div>
                     <input onchange="previewImage(event)" type="file" id="image" name="image" accept="image/*" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-primary"><%= car && car.id ? 'Оновити' : 'Зберегти' %></button>
+                <button type="submit" class="btn btn-primary"><%= car && car._id ? 'Оновити' : 'Зберегти' %></button>
                 <a href="/cars" class="btn btn-secondary">Назад</a>
             </form>
         </div>

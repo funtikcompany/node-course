@@ -1,74 +1,60 @@
 import Car from '../models/cars/Car.js'
 import { deleteFile } from '../utils/utils.js'
-import { validationResult, matchedData } from 'express-validator'
-
+import CarServices from '../services/carServises.mjs'
 class CarController {
-    static getAllCars(req, res) {
-        const cars = Car.getAllCars()
+    static async getAllCars(req, res) {
+        const cars = await CarServices.getAllCars()
         res.render('cars/carList', { cars,
             title: 'Список автомобілів',
             activePage: 'cars'
         })
     }
-    static getCarById(req, res) {
-        const car = Car.getCarById(req.params.id)
+    static async getCarById(req, res) {
+        const car = await CarServices.getCarById(req.params.id)
         res.render('cars/carDetail', { car,
             title: 'Детальна інформація про автомобіль',
             activePage: 'cars'
          })
     }
-    static showCarForm(req, res) {
+    static async showCarForm(req, res) {
         const id = req.params.id
-        const car = id ? Car.getCarById(id) : null
+        const car = id ? await CarServices.getCarById(id) : null
         res.render('cars/carForm', {
-            car: car,
+            car,
             title: 'Додати автомобіль',
             activePage: 'cars'
         })
     }
-    static createCar(req, res) {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            if (req.file) {
-                deleteFile('uploads', req.file.filename); 
-            }
-            return res.status(400).render('cars/carForm', {
-                car: req.body,
-                title: 'Додати автомобіль',
-                activePage: 'cars',
-                errors: errors.array()
-            })
-        }
-        const carData = matchedData(req,{ locations: ['body'] })
+    static async createCar(req, res) {
+        const carData = req.validatedData
         let image = null
         if(req.file) {
             image = req.file.filename  
         }
-        const car = Car.createCar({ ...carData, image })
+        const car = await CarServices.createCar({ ...carData, image })
         res.redirect('/cars')
     }
-    static updateCar(req, res) {   
+    static async updateCar(req, res) {   
         const id = req.params.id
-        const carData = Car.getCarById(id)
+        const existingCar = await CarServices.getCarById(id)
 
-        const { name, number, age } = req.body
-        let image = carData.image
+        let image = existingCar.image
         if(req.file) {
-            if(carData.image) {
-                deleteFile('uploads', carData.image)
+            if(existingCar.image) {
+                deleteFile('uploads', existingCar.image)
             }
             image = req.file.filename
         }
-        const car = Car.updateCar(id, { name, number, age, image })
+        const car = await CarServices.updateCar(id, { ...req.validatedData, image })
         res.redirect('/cars')
     }
-    static deleteCar(req, res) {
+    static async deleteCar(req, res) {
         const id = req.body.id
-        const car = Car.getCarById(id)
+        const car = await CarServices.getCarById(id)
         if(car.image) {
             deleteFile('uploads', car.image)
         }
-        Car.deleteCarById(id)
+        await CarServices.deleteCarById(id)
         res.status(200).json({ success: true })
     }
 }
