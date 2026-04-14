@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script>
+   async function deleteCar(id) {
+        try {
+            const response = await fetch('/cars', {
+                method: 'delete',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            })
+            if (response.ok) {
+                window.location.reload()
+            }
+        } catch (error) {
+            console.log(error.message)
+        } 
+    }
+  </script>
+</head>
+<body>
+  <%- include('../componets/header', { activePage: 'cars' }) %>
+  <main class="main-content">
+    <div class="container">
+        <div class="mb-3">
+            <a href="/cars/create" class="btn btn-primary">Додати автомобіль</a>
+        </div>
+        <% if (cars.length === 0) { %>
+            <div class="alert alert-info">Немає автомобілів</div>
+        <% } %>
+
+        <% cars.forEach((car, index) => { %>
+            
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="">
+                <img src="<%= car.image ? `/uploads/${car.image}` : '/images/no-img.jpg' %>" alt="<%= car.name %>" class="img-fluid">
+                <div class="car-name">
+                    <%= car.name %>
+                </div>
+            </div>
+            <div class="car-number">
+                <%= car.number %>
+            </div>
+            <div class="car-age">
+                <%= car.age %>
+            </div>
+            <div class="car-owner">
+                <%= car.owner.first_name %> <%= car.owner.last_name %>
+            </div>
+            <div class="d-flex align-items-center d-flex gap-2 flex-wrap">
+                <a href="/cars/<%= car.id %>" class="btn btn-primary">Детальніше</a>
+                <a href="/cars/update/<%= car.id %>" class="btn btn-success">Редагувати</a>
+                <button onclick="deleteCar('<%= car.id %>')" class="btn btn-danger">Видалити</button>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+  </main>
+  <%- include('../componets/footer') %>
+</body>
+</html>

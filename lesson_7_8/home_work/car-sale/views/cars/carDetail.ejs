@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script>
+    async function deleteCar(id) {
+      try {
+        const response = await fetch('/cars', {
+          method: 'delete',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ id }),
+        })
+          if (response.ok) {
+            window.location = '/cars'
+          }
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+  </script>
+</head>
+<body>
+  <%- include('../componets/header', { activePage: 'cars' }) %>
+  <main class="main-content">
+    <div class="container">
+      <div class="car-detail-wrapper">
+        <a href="/cars" class="btn btn-primary btn-back">&larr; Назад до списку</a>
+
+        <div class="car-detail-card">
+          <div class="car-detail-image-wrap">
+            <img
+              src="<%= car.image ? `/uploads/${car.image}` : '/images/no-img.jpg' %>"
+              alt="<%= car.name %>"
+              class="car-detail-image"
+            />
+          </div>
+
+          <div class="car-detail-info">
+            <h1 class="car-detail-name"><%= car.name %></h1>
+
+            <div class="car-detail-specs">
+              <div class="spec-item">
+                <span class="spec-label">Номерний знак</span>
+                <span class="spec-value spec-number"><%= car.number %></span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Рік випуску</span>
+                <span class="spec-value spec-year"><%= car.age %></span>
+              </div>
+            </div>
+            <div class="car-detail-specs">
+                  <div class="spec-item">
+                    <span class="spec-label">Власник</span>
+                    <span class="spec-value spec-number"><%= car.owner.first_name %> <%= car.owner.last_name %></span>
+                    <span class="spec-value spec-number"><%= car.owner.address %></span>
+                  </div>
+              </div>
+
+            <div class="car-detail-actions">
+              <a href="/cars/update/<%= car.id %>" class="btn btn-success">Редагувати</a>
+              <button onclick="deleteCar('<%= car.id %>')" class="btn btn-danger">Видалити</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../componets/footer') %>
+</body>
+</html>
