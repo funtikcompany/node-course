@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1><%=title%></h1>
+    <div>
+      <%if(products.length>0){%>
+      <ul>
+        <%products.forEach((product)=>{%>
+        <li><%=`${product.pr_type} - ${product.title}`%></li>
+        <%})%>
+      </ul>
+      <%}%>
+    </div>
+    <div>
+      <a href="addAutoForm.html">Додати авто</a>
+    </div>
+    <div>
+      <a href="addPhoneForm.html">Додати телефон</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register page</title>
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body>
+        <main class="register-page">
+            <div class="register-container">
+                <div class="form-card">
+                    <h1 class="form-card__title">Register</h1>
+                    <p class="form-card__lead">Увійдіть під своїм ім’ям та паролем</p>
+                    <% if (typeof validationErrors !== 'undefined' && validationErrors.length) { %>
+                    <ul class="form-errors" role="alert">
+                        <% validationErrors.forEach((msg) => { %>
+                        <li><%= msg %></li>
+                        <% }) %>
+                    </ul>
+                    <% } %>
+                    <form class="form-stack" action="/login" method="post">
+                        <div class="form-field">
+                            <label class="form-label" for="reg-name">Ім’я</label>
+                            <input
+                                class="form-control"
+                                id="reg-name"
+                                type="text"
+                                name="name"
+                                value="<%= typeof name !== 'undefined' ? name : '' %>"
+                                required
+                                placeholder="Псевдонім або логін"
+                                autocomplete="username"
+                            />
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label" for="reg-password">Пароль</label>
+                            <input
+                                class="form-control"
+                                id="reg-password"
+                                type="password"
+                                name="password"
+                                value=""
+                                required
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                            />
+                        </div>
+                        <button class="btn btn-primary form-actions__btn" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </body>
+
+</html>

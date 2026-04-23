@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Product</title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+
+    <body>
+        <%- include('../componets/header', { activePage: typeof activePage !== 'undefined' ? activePage : '' }) %>
+        <main>
+            <div class="products-container">
+                <h1 class="products-title">Product List</h1>
+                <a href="/products/create" class="btn btn-primary">Create Product</a>
+                <ul class="products-list">
+                    <% if(products){ %>
+                        <% for(let product of products ){ %>
+                            <li class="product-item" style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
+                                <div class="product-image">
+                                    <img style="width: 100px; height: 100px;" src="<%=product.image  %>" alt="<%=product.title %>">
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">
+                                        <%=product.title %>
+                                    </h3>
+                                    <p class="product-price">
+                                        <span class="price-label">Price:</span>
+                                        <span class="price-value">$<%=product.price %></span>
+                                        <span class="price-label">Count:</span>
+                                        <span class="price-value"><%=product.count %></span>
+                                    </p>
+                                </div>
+                            </li>
+                        <% } %>
+                    <% } %>
+                </ul>
+            </div>
+        </main>
+    </body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            <%= typeof title !== 'undefined' ? title : 'Add product' %>
+        </title>
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body>
+        <%- include('../componets/header', { activePage: typeof activePage !== 'undefined' ? activePage : '' }) %>
+        <main class="products-container">
+            <h1 class="products-title">Додати товар</h1>
+            <div class="form-card form-card--wide">
+                <form
+                    class="form-stack product-form"
+                    action="/products/create"
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+                    <div class="form-field">
+                        <label class="form-label" for="product-title">Назва</label>
+                        <input
+                            class="form-control"
+                            id="product-title"
+                            type="text"
+                            name="title"
+                            required
+                            placeholder="Назва товару"
+                        />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label class="form-label" for="product-price">Ціна</label>
+                            <input
+                                class="form-control"
+                                id="product-price"
+                                type="number"
+                                name="price"
+                                required
+                                placeholder="0"
+                            />
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label" for="product-count">Кількість</label>
+                            <input
+                                class="form-control"
+                                id="product-count"
+                                type="number"
+                                name="count"
+                                required
+                                placeholder="0"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label" for="product-image">Зображення</label>
+                        <input
+                            class="form-control form-control--file"
+                            id="product-image"
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                            required
+                        />
+                    </div>
+                    <button class="btn btn-primary form-actions__btn" type="submit">Зберегти</button>
+                </form>
+            </div>
+        </main>
+    </body>
+
+</html>
